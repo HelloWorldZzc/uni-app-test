@@ -1,0 +1,30 @@
+{
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "id": 0,
+          "name": "message页面编辑",
+          "pathName": "pages/message/index",
+          "query": "id=90"
+        },
+        {
+          "name": "",
+          "pathName": "pages/battle/index",
+          "query": "",
+          "scene": null,
+          "launchMode": "default"
+        }
+      ]
+    }
+  }
+}
