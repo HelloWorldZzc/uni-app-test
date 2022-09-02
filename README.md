@@ -95,7 +95,169 @@
  ```
  <!-- #ifdef H5 --> 
  <!-- #endif -->
- ``` 包裹住相关的代码
+ ``` 
+ 包裹住相关的代码
+
+ ### 组件之间的跳转
+
+ 组件之间的跳转能够使用编程式和导航式两种方式,于小程序的开发类似
+
+ 其文档如下所示:https://uniapp.dcloud.net.cn/component/navigator.html
+
+ 编程式使用编程的形式,使用navigator组件包裹,示例的demo如下所示(open-type属性为打开方式,跳转到不同的位置有着不同的要求,具体参考官方文档)
+
+ ```
+ <navigator url="/pages/message/message" open-type="switchTab">跳转至信息页</navigator>
+ 
+ <navigator url="/pages/detail/detail?id=80&age=19">跳转至详情页</navigator>
+```
+ 同时也可以使用导航式的组件,及调用api的形式,跳转到不同的界面有着不同的api和不同的参数,以下是一些例子
+
+```
+goDetail () {
+				uni.navigateTo({
+					url: '/pages/detail/detail?id=80&age=19'
+				})
+			},
+			goMessage () {
+				uni.switchTab({
+					url: '/pages/message/message'
+				})
+			},
+			redirectDetail () {
+				uni.redirectTo({
+					url: '/pages/detail/detail'
+				});
+			},
+			addToCar () {
+				uni.$emit('updateCart',{
+					id: 10,
+					name: '贸易'
+				})
+			}
+		}
+```
+ 
+ tip:同时也能携带一些参数,参数的读取可通过生命周期onload中的第一个参数读取
+
+#### 组件的创建与使用&组件的生命周期
+ 
+ 不能说一模一样,只能说毫不相关吧,生命周期的话是和vue一模一样的,没有任何的区别
+
+### 组件之间通信
+
+ 组件之间的通信方式有父传子,子传父,兄弟组件之间的通信
+
+ 父传子与子传父两者都是可以通过简单的props和提前传递相关的接口方式完成
+
+ 兄弟组件之间(vuex太过于复杂没有体现)使用的是类似于vue中的事件总线bus的方式完成相关的通信
+
+ 但与vue所有不同,在于他的相关api调用
+```
+
+<template>
+	<view>
+		这是a组件：<button @click="addNum">修改b组件的数据</button>
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				
+			};
+		},
+		methods: {
+			addNum () {
+				uni.$emit('updateNum',10)
+			}
+		}
+	}
+</script>
+
+<style>
+
+</style>
+
+
+<template>
+	<view>
+		这是b组件的数据:{{num}}
+	</view>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				num: 0
+			};
+		},
+		created(){
+			uni.$on('updateNum',num=>{
+				this.num+=num
+			})
+		}
+	}
+</script>
+
+<style>
+
+</style>
+
+```
+ 使用uni.$on与uni.$emit完成,与vue中的bus又点区别,变得更加简单了吧
+
+
+ #### uni-ui组件库的使用
+
+ 在test/index.vue文件夹中,使用的是uni-UI组件库
+
+ 首先在https://uniapp.dcloud.net.cn/component/ 中选择扩展组件,选择使用的插件安装到本地(其实vue中的elementUI也需要安装,只不过是npm帮我们做了这一系列操作)
+
+ 按照他的文档进行操作
+
+ 以下是一个demo
+```
+<template>
+	<view>
+		 <uni-calendar 
+		    :insert="true"
+		    :lunar="true" 
+		    :start-date="'2019-3-2'"
+		    :end-date="'2019-5-20'"
+		    @change="change"
+		     />
+	</view>
+</template>
+
+<script>
+</script>
+
+<style>
+</style>
+```
+
+ 其实为什么不用引入就能调用,我也不清楚,我看着他官方文档说的使用了什么什么技术因此不需要使用import
+
+ 要是需要使用import的话,与vue相似,导入注册展示
+
+# part end
+
+ 上面的文档是uni-app的基础,感觉掌握了vue的话,过一下官方文档就能开始做开发了,基于vue框架上进行开发但是与vue又有一些不同,可能是考虑到要兼容其他平台的开发吧
+
+ 个人感觉,是使用vue和wx.api进行了一些合并,不过确实的,对会vue的开发者更加友好
+
+ end----> 以后尝试着使用框架做一些开发吧,uni-app的基础部分就到此结束了(代码没什么参考,都是自己写的好乱的demo)
+ 
+
+ 
+
+
+ 
+
+
 
  
 
